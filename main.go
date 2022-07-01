@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"macaque/repl"
+	"simian/repl"
 	"os"
 )
 
@@ -12,7 +12,7 @@ func main() {
 	//	if err != nil {
 	//		panic(err)
 	//	}
-	fmt.Printf("Welcome to Macaque, an interpreter for the Monkey Language\n")
+	fmt.Printf("Welcome to Simian, an interpreter for the Monkey Language\n")
 	fmt.Printf("REPL Starting:\n")
 	repl.Start(os.Stdin, os.Stdout)
 

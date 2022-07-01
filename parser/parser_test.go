@@ -1,8 +1,8 @@
 package parser
 
-import (
-	"macaque/ast"
-	"macaque/lexer"
+mport (
+	"simian/ast"
+	"simian/lexer"
 	"testing"
 )
 

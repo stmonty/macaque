@@ -1,7 +1,7 @@
 package lexer
 
 import (
-    "macaque/token"
+    "simian/token"
 )
 
 type Lexer struct {

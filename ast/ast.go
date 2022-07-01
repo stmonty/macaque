@@ -1,6 +1,6 @@
 package ast
 
-import "macaque/token"
+import "simian/token"
 
 // All Expressions and Statements start with Nodes
 type Node interface {

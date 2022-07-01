@@ -1,9 +1,9 @@
 package parser
 
 import (
-	"macaque/ast"
-	"macaque/lexer"
-	"macaque/token"
+	"simian/ast"
+	"simian/lexer"
+	"simian/token"
 )
 
 type Parser struct {
