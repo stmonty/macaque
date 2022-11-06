@@ -3,7 +3,7 @@ package lexer
 import (
     "testing"
 
-    "macaque/token"
+    "simian/token"
 
 )
 
