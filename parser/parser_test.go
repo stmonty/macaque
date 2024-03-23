@@ -1,10 +1,24 @@
 package parser
 
-mport (
+import (
 	"simian/ast"
 	"simian/lexer"
 	"testing"
 )
+
+func checkParserErrors(t *testing.T, p *Parser) {
+	errors := p.errors
+
+	if len(errors) == 0 {
+		return
+	}
+
+	t.Errorf("Parser has %d errors", len(errors))
+	for _, msg := range errors {
+		t.Errorf("Parser error: %q", msg)
+	}
+	t.FailNow()
+}
 
 func TestLetStatement(t *testing.T) {
 	input := `let x = 5; let y = 10; let variable = 42;`
@@ -13,6 +27,7 @@ func TestLetStatement(t *testing.T) {
 	p := New(l)
 
 	program := p.parseProgram()
+	checkParserErrors(t, p)
 	if program == nil {
 		t.Fatalf("Parsing Program returned nil")
 	}
@@ -58,4 +73,32 @@ func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
 	}
 
 	return true
+}
+
+func TestReturnStatements(t *testing.T) {
+	input := "return 5; return 10; return 42;"
+	l := lexer.New(input)
+	p := New(l)
+
+	program := p.parseProgram()
+
+	checkParserErrors(t, p)
+	if program == nil {
+		t.Fatalf("Parsing Program returned nil")
+	}
+	if len(program.Statements) != 3 {
+		t.Fatalf("Expected=3 : got=%d statements", len(program.Statements))
+	}
+
+	for _, stmt := range program.Statements {
+		returnStmt, ok := stmt.(*ast.ReturnStatement)
+		if !ok {
+			t.Errorf("stmt not *ast.ReturnStatement. Found=%T", stmt)
+			continue
+		}
+		if returnStmt.TokenLiteral() != "return" {
+			t.Errorf("returnStmt.TokenLiteral not 'return'. Found=%q", returnStmt.TokenLiteral())
+		}
+	}
+
 }
