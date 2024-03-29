@@ -100,5 +100,67 @@ func TestReturnStatements(t *testing.T) {
 			t.Errorf("returnStmt.TokenLiteral not 'return'. Found=%q", returnStmt.TokenLiteral())
 		}
 	}
+}
 
+func TestIdentifierExpression(t *testing.T) {
+	input := "hello;"
+	l := lexer.New(input)
+	p := New(l)
+
+	program := p.parseProgram()
+	checkParserErrors(t, p)
+
+	if len(program.Statements) != 1 {
+		t.Fatalf("Program has too few statements. Got=%d", len(program.Statements))
+	}
+
+	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+	if !ok {
+		t.Fatalf("Program.Statements[0] is not an ast.ExpressionStatement. Got=%T", program.Statements[0])
+	}
+
+	ident, ok := stmt.Expression.(*ast.Identifier)
+	if !ok {
+		t.Fatalf("Exp not *ast.Identifier. Got=%T", stmt.Expression)
+	}
+
+	if ident.Value != "hello" {
+		t.Errorf("Incorrect ident.Value. Not=%s, got=%s", "hello", ident.Value)
+	}
+
+	if ident.TokenLiteral() != "hello" {
+		t.Errorf("ident.TokenLiteral() does not equal %s. Got=%s", "hello", ident.TokenLiteral())
+	}
+	
+}
+
+func TestIntegerLiteralExpression(t *testing.T) {
+	input := "7;"
+
+	l := lexer.New(input)
+	p := New(l)
+	program := p.parseProgram()
+	checkParserErrors(t, p)
+
+	if len(program.Statements) != 1 {
+		t.Fatalf("Program has too few statements. Got=%d", len(program.Statements))
+	}
+
+	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+	if !ok {
+		t.Fatalf("Program.Statements[0] is not an ast.ExpressionStatement. Got=%T", program.Statements[0])
+	}
+
+	literal, ok := stmt.Expression.(*ast.IntegerLiteral)
+	if !ok {
+		t.Fatalf("Exp not *ast.Identifier. Got=%T", stmt.Expression)
+	}
+
+	if literal.Value != 7 {
+		t.Errorf("Incorrect literal.Value. Not=%d, got=%d", 7, literal.Value)
+	}
+
+	if literal.TokenLiteral() != "7" {
+		t.Errorf("literal.TokenLiteral() does not equal %s. Got=%s", "hello", literal.TokenLiteral())
+	}
 }
